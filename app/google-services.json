@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "455987785093",
+    "firebase_url": "https://baking-time.firebaseio.com",
+    "project_id": "baking-time",
+    "storage_bucket": "baking-time.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455987785093:android:4c7c572177ed2dd2",
+        "android_client_info": {
+          "package_name": "br.com.udacity.bakingtime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455987785093-4f0n7uj3irnvstia9lobl6jivatvcbcu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.udacity.bakingtime",
+            "certificate_hash": "96b02b166e8c1151b9c99ea2757d338d03b9978c"
+          }
+        },
+        {
+          "client_id": "455987785093-2kug5ecklo296t4eja65oket2e3jlvcf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKVg-_ilBYp6ZKbA8xs_H-AQyZdfaJRrs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455987785093-2kug5ecklo296t4eja65oket2e3jlvcf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
