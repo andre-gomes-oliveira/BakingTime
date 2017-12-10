@@ -2,10 +2,12 @@ package br.com.udacity.bakingtime.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
@@ -46,15 +49,6 @@ public class RecipeListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         if (findViewById(R.id.recipe_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -63,9 +57,17 @@ public class RecipeListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.recipe_list);
+        RecyclerView recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+
+        //if (mTwoPane) {
+        //    recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        //} else {
+        //    recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        //}
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+
+        setupRecyclerView(recyclerView);
         handleIntent();
     }
 
@@ -98,6 +100,7 @@ public class RecipeListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
                 if (mTwoPane) {
+
                     Bundle arguments = new Bundle();
                     arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.id);
                     RecipeDetailFragment fragment = new RecipeDetailFragment();
