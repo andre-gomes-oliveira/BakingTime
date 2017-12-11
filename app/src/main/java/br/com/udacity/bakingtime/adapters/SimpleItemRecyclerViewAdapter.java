@@ -21,31 +21,10 @@ import br.com.udacity.bakingtime.ui.RecipeDetailFragment;
 
 public class SimpleItemRecyclerViewAdapter
         extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
     private final AppCompatActivity mParentActivity;
     private final List<DummyContent.DummyItem> mValues;
     private final boolean mTwoPane;
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
-            if (mTwoPane) {
-
-                Bundle arguments = new Bundle();
-                arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.id);
-                RecipeDetailFragment fragment = new RecipeDetailFragment();
-                fragment.setArguments(arguments);
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.recipe_detail_container, fragment)
-                        .commit();
-            } else {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, RecipeDetailActivity.class);
-                intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, item.id);
-
-                context.startActivity(intent);
-            }
-        }
-    };
 
     public SimpleItemRecyclerViewAdapter(boolean twoPane, List<DummyContent.DummyItem> items, AppCompatActivity parent) {
         mTwoPane = twoPane;
@@ -84,4 +63,27 @@ public class SimpleItemRecyclerViewAdapter
             mContentView = view.findViewById(R.id.content);
         }
     }
+
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+            if (mTwoPane) {
+
+                Bundle arguments = new Bundle();
+                arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, item.id);
+                RecipeDetailFragment fragment = new RecipeDetailFragment();
+                fragment.setArguments(arguments);
+                mParentActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.recipe_detail_container, fragment)
+                        .commit();
+            } else {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, RecipeDetailActivity.class);
+                intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, item.id);
+
+                context.startActivity(intent);
+            }
+        }
+    };
 }

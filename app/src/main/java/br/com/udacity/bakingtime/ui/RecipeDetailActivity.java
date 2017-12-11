@@ -3,6 +3,7 @@ package br.com.udacity.bakingtime.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
@@ -53,9 +54,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        mStepsRecyclerView = findViewById(R.id.steps_list);
-        assert mStepsRecyclerView != null;
-        setupRecyclerView(mStepsRecyclerView);
+        if (mTwoPane) {
+            mStepsRecyclerView = findViewById(R.id.steps_list);
+            assert mStepsRecyclerView != null;
+
+            mStepsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+            setupRecyclerView(mStepsRecyclerView);
+        }
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity

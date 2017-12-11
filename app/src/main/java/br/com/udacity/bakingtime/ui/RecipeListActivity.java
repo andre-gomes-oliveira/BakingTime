@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,14 @@ public class RecipeListActivity extends AppCompatActivity {
         mRecipesRecyclerView = findViewById(R.id.recipe_list);
         assert mRecipesRecyclerView != null;
         setupRecyclerView(mRecipesRecyclerView);
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        if (displayMetrics.widthPixels >= 900) {
+            mRecipesRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        } else {
+            mRecipesRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        }
 
         handleIntent();
     }
