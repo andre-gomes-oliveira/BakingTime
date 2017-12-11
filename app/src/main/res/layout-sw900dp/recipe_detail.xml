@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,23 +9,22 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="br.com.udacity.bakingtime.ui.RecipeListActivity">
+    tools:context="br.com.udacity.bakingtime.ui.RecipeDetailActivity">
 
-<!--
+    <!--
     This layout is a two-pane layout for the Recipes
     master/detail flow.
-    
     -->
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/recipe_list"
-        android:name="br.com.udacity.bakingtime.RecipeListFragment"
+        android:id="@+id/steps_list"
+        android:name="br.com.udacity.bakingtime.RecipeDetailFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        tools:context="br.com.udacity.bakingtime.ui.RecipeListActivity"
+        tools:context="br.com.udacity.bakingtime.ui.RecipeDetailActivity"
         tools:listitem="@layout/recipe_list_content" />
 
     <FrameLayout
