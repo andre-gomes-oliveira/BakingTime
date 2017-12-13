@@ -2,6 +2,7 @@ package br.com.udacity.bakingtime.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,8 +31,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     /**
      * Recycler view used to display a list of recipe steps
+     *  It will only be used in tablet devices.
      */
     private RecyclerView mStepsRecyclerView;
+
+    /**
+     *  Layout manager used by the steps recycler view.
+     *  It will only be used in tablet devices.
+     */
+    private GridLayoutManager mStepsLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +66,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (mTwoPane) {
             mStepsRecyclerView = findViewById(R.id.steps_list);
             assert mStepsRecyclerView != null;
-
-            mStepsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
             setupRecyclerView(mStepsRecyclerView);
+
+            mStepsLayoutManager = new GridLayoutManager(this, 1);
+            mStepsRecyclerView.setLayoutManager(mStepsLayoutManager);
         }
 
         // savedInstanceState is non-null when there is fragment state
@@ -83,6 +92,26 @@ public class RecipeDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
+        }
+        else{
+            if(mTwoPane){
+                Parcelable recyclerLayoutState = savedInstanceState.getParcelable
+                        (getString(R.string.bundle_recycler_position));
+
+                if(recyclerLayoutState != null)
+                    mStepsLayoutManager.onRestoreInstanceState(recyclerLayoutState);
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        if(mTwoPane){
+            outState.putParcelable(getString(R.string.bundle_recycler_position),
+                    mStepsLayoutManager.onSaveInstanceState());
         }
     }
 

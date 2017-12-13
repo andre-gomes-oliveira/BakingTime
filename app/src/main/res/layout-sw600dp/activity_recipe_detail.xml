@@ -55,6 +55,7 @@
                 android:layout_marginRight="16dp"
                 tools:context="br.com.udacity.bakingtime.ui.RecipeDetailActivity"
                 tools:listitem="@layout/recipe_list_content" />
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

@@ -14,7 +14,8 @@
         <activity
             android:name=".ui.RecipeListActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
             <tools:validation testUrl="https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json" />
 
             <intent-filter>
