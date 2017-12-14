@@ -30,12 +30,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private boolean mTwoPane;
 
     /**
-     * Recycler view used to display a list of recipe steps
-     *  It will only be used in tablet devices.
-     */
-    private RecyclerView mStepsRecyclerView;
-
-    /**
      *  Layout manager used by the steps recycler view.
      *  It will only be used in tablet devices.
      */
@@ -64,7 +58,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
 
         if (mTwoPane) {
-            mStepsRecyclerView = findViewById(R.id.steps_list);
+            /*
+      Recycler view used to display a list of recipe steps
+       It will only be used in tablet devices.
+     */
+            RecyclerView mStepsRecyclerView = findViewById(R.id.steps_list);
             assert mStepsRecyclerView != null;
             setupRecyclerView(mStepsRecyclerView);
 

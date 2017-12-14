@@ -15,9 +15,9 @@ import br.com.udacity.bakingtime.dummy.DummyContent;
 
 /**
  * A fragment representing a single Recipe detail screen.
- * This fragment is either contained in a {@link RecipeListActivity}
- * in two-pane mode (on tablets) or a {@link RecipeDetailActivity}
- * on handsets.
+ * This fragment is contained in a {@link RecipeDetailActivity}
+ * either in two-pane mode (on tablets, side by side with a list of steps)
+ * or a on handsets (by itself).
  */
 public class RecipeDetailFragment extends Fragment {
     /**

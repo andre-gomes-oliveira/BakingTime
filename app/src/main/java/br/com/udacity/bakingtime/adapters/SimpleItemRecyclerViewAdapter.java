@@ -1,6 +1,5 @@
 package br.com.udacity.bakingtime.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
