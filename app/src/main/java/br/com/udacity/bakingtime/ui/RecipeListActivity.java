@@ -14,7 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import br.com.udacity.bakingtime.R;
-import br.com.udacity.bakingtime.adapters.SimpleItemRecyclerViewAdapter;
+import br.com.udacity.bakingtime.adapters.RecipesRecyclerViewAdapter;
 import br.com.udacity.bakingtime.data.RecipesLoader;
 import br.com.udacity.bakingtime.dummy.DummyContent;
 import br.com.udacity.bakingtime.model.Recipe;
@@ -38,6 +38,8 @@ public class RecipeListActivity
      * It will contain just one column on phones, and three columns on tablet devices.
      */
     private GridLayoutManager mRecipesLayoutManager;
+
+    private Recipe[] mRecipes;
 
     /**
      * Unique identifier for the loader used by this activity
@@ -109,10 +111,9 @@ public class RecipeListActivity
 
     @Override
     public void onLoadFinished(Loader<Recipe[]> loader, Recipe[] data) {
-        //TODO: Integrate the recipes on the interface
-        //if ((data != null) && (data.length > 0)) {
-
-        //}
+        if ((data != null) && (data.length > 0)) {
+            mRecipes = data;
+        }
     }
 
     /* This function had to be overridden, but it will not be used by this activity */
@@ -142,6 +143,6 @@ public class RecipeListActivity
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(false, DummyContent.ITEMS, this));
+        recyclerView.setAdapter(new RecipesRecyclerViewAdapter(false, mRecipes, this));
     }
 }

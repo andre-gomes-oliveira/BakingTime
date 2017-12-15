@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.dummy.DummyContent;
-import br.com.udacity.bakingtime.adapters.SimpleItemRecyclerViewAdapter;
+import br.com.udacity.bakingtime.adapters.RecipesRecyclerViewAdapter;
 
 /**
  * An activity representing a list of recipe steps. This activity
@@ -130,6 +130,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(mTwoPane, DummyContent.ITEMS, this));
+        //TODO: Adjust the recyclerView to hold Recipe steps
+        //recyclerView.setAdapter(new RecipesRecyclerViewAdapter(mTwoPane, DummyContent.ITEMS, this));
     }
 }
