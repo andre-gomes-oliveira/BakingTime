@@ -12,12 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 
 import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.adapters.RecipesRecyclerViewAdapter;
 import br.com.udacity.bakingtime.data.RecipesLoader;
-import br.com.udacity.bakingtime.dummy.DummyContent;
 import br.com.udacity.bakingtime.model.Recipe;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
@@ -39,7 +42,23 @@ public class RecipeListActivity
      */
     private GridLayoutManager mRecipesLayoutManager;
 
-    private Recipe[] mRecipes;
+    /**
+     Recycler view used to display a list of Recipes.
+     */
+    @BindView(R.id.recipe_list)
+    RecyclerView mRecipesRecyclerView;
+
+    /**
+     The activity's Toolbar
+     */
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    /**
+     TextView used to display error messages when the connection fails
+     */
+    @BindView(R.id.tv_error_message)
+    TextView mErrorMessageDisplay;
 
     /**
      * Unique identifier for the loader used by this activity
@@ -54,16 +73,11 @@ public class RecipeListActivity
         //Setting up Timber
         Timber.plant(new Timber.DebugTree());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        //Setting up ButterKnife
+        ButterKnife.bind(this);
 
-        /*
-      Recycler view used to display a list of Recipes.
-     */
-        RecyclerView mRecipesRecyclerView = findViewById(R.id.recipe_list);
-        assert mRecipesRecyclerView != null;
-        setupRecyclerView(mRecipesRecyclerView);
+        setSupportActionBar(mToolbar);
+        mToolbar.setTitle(getTitle());
 
         Configuration config = getResources().getConfiguration();
 
@@ -112,7 +126,12 @@ public class RecipeListActivity
     @Override
     public void onLoadFinished(Loader<Recipe[]> loader, Recipe[] data) {
         if ((data != null) && (data.length > 0)) {
-            mRecipes = data;
+            mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+            setupRecyclerView(mRecipesRecyclerView, data);
+        }
+        else{
+            setupRecyclerView(mRecipesRecyclerView, new Recipe[0]);
+            mErrorMessageDisplay.setVisibility(View.VISIBLE);
         }
     }
 
@@ -142,7 +161,7 @@ public class RecipeListActivity
             loaderManager.restartLoader(RECIPES_LOADER, requestBundle, this);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new RecipesRecyclerViewAdapter(false, mRecipes, this));
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, Recipe[] recipes) {
+        recyclerView.setAdapter(new RecipesRecyclerViewAdapter(recipes, this));
     }
 }

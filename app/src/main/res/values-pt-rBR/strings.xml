@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">Hora da Receita!</string>
     <string name="title_recipe_detail">Passos da Receita</string>
+    <string name="error_loading_message">Não foi possível carregar as receitas,
+        por favor verifique a sua conexão com a internet</string>
+    <string name="action_settings">Configurações</string>
+    <string name="title_activity_recipe">Conteúdo da receita</string>
 </resources>

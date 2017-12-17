@@ -1,9 +1,9 @@
 package br.com.udacity.bakingtime.ui;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import br.com.udacity.bakingtime.R;
-import br.com.udacity.bakingtime.dummy.DummyContent;
+import br.com.udacity.bakingtime.model.Recipe;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -21,15 +21,9 @@ import br.com.udacity.bakingtime.dummy.DummyContent;
  */
 public class RecipeDetailFragment extends Fragment {
     /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
+     * The Recipe this fragment is presenting.
      */
-    public static final String ARG_ITEM_ID = "item_id";
-
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private DummyContent.DummyItem mItem;
+    private Recipe mRecipe;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,17 +35,16 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+        if (getArguments().containsKey(getString(R.string.recipe_steps_intent))) {
+
+            mRecipe = arguments.getParcelable(getString(R.string.recipe_steps_intent));
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
+                appBarLayout.setTitle(mRecipe.getName());
             }
         }
     }
@@ -61,9 +54,8 @@ public class RecipeDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.details);
+        if (mRecipe != null) {
+            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mRecipe.getName());
         }
 
         return rootView;

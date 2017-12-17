@@ -15,7 +15,6 @@ public class JsonUtilities {
     public static Recipe[] getRecipeDataFromJson(String recipesJsonStr)
             throws JSONException {
 
-        final String RECIPES_LIST = "results";
         final String MESSAGE_CODE = "cod";
 
         final String RECIPE_ID = "id";
@@ -27,27 +26,11 @@ public class JsonUtilities {
 
         Recipe[] parsedRecipeData;
 
-        JSONObject resultsJson = new JSONObject(recipesJsonStr);
+        // The JSON starts with an array
+        JSONArray resultsArray = new JSONArray(recipesJsonStr);
+        parsedRecipeData = new Recipe[resultsArray.length()];
 
-        /* Is there an error? */
-        if (resultsJson.has(MESSAGE_CODE)) {
-            int errorCode = resultsJson.getInt(MESSAGE_CODE);
-
-            switch (errorCode) {
-                case HttpURLConnection.HTTP_OK:
-                    break;
-                case HttpURLConnection.HTTP_NOT_FOUND:
-                    return null;
-                default:
-                    return null;
-            }
-        }
-
-        JSONArray recipesArray = resultsJson.getJSONArray(RECIPES_LIST);
-
-        parsedRecipeData = new Recipe[recipesArray.length()];
-
-        for (int i = 0; i < recipesArray.length(); i++) {
+        for (int i = 0; i < resultsArray.length(); i++) {
             /* recipe data to be obtained*/
             int id;
             String name;
@@ -57,7 +40,7 @@ public class JsonUtilities {
             String imageUrl;
 
             /* Get the JSON object representing the movie */
-            JSONObject recipe = recipesArray.getJSONObject(i);
+            JSONObject recipe = resultsArray.getJSONObject(i);
 
             id = recipe.getInt(RECIPE_ID);
             name = recipe.getString(RECIPE_NAME);

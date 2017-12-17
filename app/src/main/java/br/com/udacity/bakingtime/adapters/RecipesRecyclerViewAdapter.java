@@ -2,7 +2,6 @@ package br.com.udacity.bakingtime.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,22 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.model.Recipe;
 import br.com.udacity.bakingtime.ui.RecipeDetailActivity;
-import br.com.udacity.bakingtime.ui.RecipeDetailFragment;
 
 public class RecipesRecyclerViewAdapter
         extends RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
 
     private final AppCompatActivity mParentActivity;
     private final Recipe[] mRecipes;
-    private final boolean mTwoPane;
 
-    public RecipesRecyclerViewAdapter(boolean twoPane, Recipe[] items, AppCompatActivity parent) {
-        mTwoPane = twoPane;
+    public RecipesRecyclerViewAdapter(Recipe[] items, AppCompatActivity parent) {
         mRecipes = items;
         mParentActivity = parent;
     }
@@ -39,8 +33,8 @@ public class RecipesRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mIdView.setText(mRecipes[position].getName());
-        holder.mContentView.setText(mRecipes[position].describeContents());
+        holder.mIdView.setText(String.valueOf(mRecipes[position].getId()));
+        holder.mContentView.setText(mRecipes[position].getName());
 
         holder.itemView.setTag(mRecipes[position]);
         holder.itemView.setOnClickListener(mOnClickListener);
@@ -66,26 +60,12 @@ public class RecipesRecyclerViewAdapter
         @Override
         public void onClick(View view) {
             Recipe recipe = (Recipe) view.getTag();
-            if (mTwoPane) {
+            Context context = view.getContext();
+            Class destinationClass = RecipeDetailActivity.class;
+            Intent intent = new Intent(context, destinationClass);
 
-                Bundle arguments = new Bundle();
-                arguments.putString(RecipeDetailFragment.ARG_ITEM_ID, recipe.getName());
-
-                RecipeDetailFragment fragment = new RecipeDetailFragment();
-                fragment.setArguments(arguments);
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.recipe_detail_container, fragment)
-                        .commit();
-            } else {
-                Context context = view.getContext();
-                Class destinationClass = RecipeDetailActivity.class;
-                Intent intent = new Intent(context, destinationClass);
-
-                intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID,  recipe.getName());
-                intent.putExtra(context.getString(R.string.recipe_steps_intent), recipe);
-                context.startActivity(intent);
-
-            }
+            intent.putExtra(context.getString(R.string.recipe_intent), recipe);
+            context.startActivity(intent);
         }
     };
 }

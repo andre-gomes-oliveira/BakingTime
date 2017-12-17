@@ -4,16 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import br.com.udacity.bakingtime.R;
-import br.com.udacity.bakingtime.dummy.DummyContent;
-import br.com.udacity.bakingtime.adapters.RecipesRecyclerViewAdapter;
+import br.com.udacity.bakingtime.adapters.StepsRecyclerViewAdapter;
+import br.com.udacity.bakingtime.model.Recipe;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * An activity representing a list of recipe steps. This activity
@@ -30,18 +32,37 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private boolean mTwoPane;
 
     /**
-     *  Layout manager used by the steps recycler view.
-     *  It will only be used in tablet devices.
+     * Layout manager used by the steps recycler view.
+     * It will only be used in tablet devices.
      */
     private GridLayoutManager mStepsLayoutManager;
+
+    /**
+     * RecyclerView used to display the steps of the recipe
+     * Shall only be use in tablet-devices
+     */
+    private RecyclerView mStepsRecyclerView;
+
+    /**
+     * The Recipe currently being displayed in this activity
+     */
+    private Recipe mRecipe;
+
+    /**
+     * The activity's toolbar
+     */
+    @BindView(R.id.detail_toolbar)
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        //Setting up ButterKnife
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -57,19 +78,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        if (mTwoPane) {
-            /*
-      Recycler view used to display a list of recipe steps
-       It will only be used in tablet devices.
-     */
-            RecyclerView mStepsRecyclerView = findViewById(R.id.steps_list);
-            assert mStepsRecyclerView != null;
-            setupRecyclerView(mStepsRecyclerView);
-
-            mStepsLayoutManager = new GridLayoutManager(this, 1);
-            mStepsRecyclerView.setLayoutManager(mStepsLayoutManager);
-        }
-
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -83,31 +91,42 @@ public class RecipeDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(RecipeDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(RecipeDetailFragment.ARG_ITEM_ID));
+            mRecipe = getIntent().getParcelableExtra(getString(R.string.recipe_intent));
+            arguments.putParcelable(getString(R.string.recipe_steps_intent), mRecipe);
+
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
-        }
-        else{
-            if(mTwoPane){
+        } else {
+            if (mTwoPane) {
                 Parcelable recyclerLayoutState = savedInstanceState.getParcelable
                         (getString(R.string.bundle_recycler_position));
 
-                if(recyclerLayoutState != null)
+                if (recyclerLayoutState != null)
                     mStepsLayoutManager.onRestoreInstanceState(recyclerLayoutState);
             }
+        }
+
+        if (mTwoPane) {
+            /*
+                Recycler view used to display a list of recipe steps
+                It will only be used in tablet devices.
+            */
+            mStepsRecyclerView = findViewById(R.id.steps_list);
+            setupRecyclerView(mStepsRecyclerView, mRecipe);
+
+            mStepsLayoutManager = new GridLayoutManager(this, 1);
+            mStepsRecyclerView.setLayoutManager(mStepsLayoutManager);
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if(mTwoPane){
+        if (mTwoPane) {
             outState.putParcelable(getString(R.string.bundle_recycler_position),
                     mStepsLayoutManager.onSaveInstanceState());
         }
@@ -129,8 +148,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        //TODO: Adjust the recyclerView to hold Recipe steps
-        //recyclerView.setAdapter(new RecipesRecyclerViewAdapter(mTwoPane, DummyContent.ITEMS, this));
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, Recipe recipe) {
+        recyclerView.setAdapter(new StepsRecyclerViewAdapter(mTwoPane, recipe, this));
     }
 }
