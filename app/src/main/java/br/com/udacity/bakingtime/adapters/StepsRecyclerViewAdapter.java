@@ -79,7 +79,7 @@ public class StepsRecyclerViewAdapter
                         .commit();
             } else {
 
-                //TODO: Verify how to adapt this logic to switch between multiplw fragments
+                //TODO: Verify how to adapt this logic to switch between multiple fragments
                 Class destinationClass = RecipeDetailActivity.class;
                 Intent intent = new Intent(context, destinationClass);
 

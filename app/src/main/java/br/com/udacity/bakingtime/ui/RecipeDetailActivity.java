@@ -90,8 +90,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
             mRecipe = getIntent().getParcelableExtra(getString(R.string.recipe_intent));
+
+            Bundle arguments = new Bundle();
             arguments.putParcelable(getString(R.string.recipe_steps_intent), mRecipe);
 
             RecipeDetailFragment fragment = new RecipeDetailFragment();
@@ -99,8 +100,24 @@ public class RecipeDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
-        } else {
+
             if (mTwoPane) {
+                mStepsRecyclerView = findViewById(R.id.steps_list);
+                setupRecyclerView(mStepsRecyclerView, mRecipe);
+
+                mStepsLayoutManager = new GridLayoutManager(this, 1);
+                mStepsRecyclerView.setLayoutManager(mStepsLayoutManager);
+            }
+        } else {
+            mRecipe = savedInstanceState.getParcelable(getString(R.string.recipe_intent));
+
+            if (mTwoPane) {
+                mStepsRecyclerView = findViewById(R.id.steps_list);
+                setupRecyclerView(mStepsRecyclerView, mRecipe);
+
+                mStepsLayoutManager = new GridLayoutManager(this, 1);
+                mStepsRecyclerView.setLayoutManager(mStepsLayoutManager);
+
                 Parcelable recyclerLayoutState = savedInstanceState.getParcelable
                         (getString(R.string.bundle_recycler_position));
 
@@ -108,25 +125,16 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     mStepsLayoutManager.onRestoreInstanceState(recyclerLayoutState);
             }
         }
-
-        if (mTwoPane) {
-            /*
-                Recycler view used to display a list of recipe steps
-                It will only be used in tablet devices.
-            */
-            mStepsRecyclerView = findViewById(R.id.steps_list);
-            setupRecyclerView(mStepsRecyclerView, mRecipe);
-
-            mStepsLayoutManager = new GridLayoutManager(this, 1);
-            mStepsRecyclerView.setLayoutManager(mStepsLayoutManager);
-        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putParcelable(getString(R.string.recipe_intent), mRecipe);
 
         if (mTwoPane) {
+
+
             outState.putParcelable(getString(R.string.bundle_recycler_position),
                     mStepsLayoutManager.onSaveInstanceState());
         }

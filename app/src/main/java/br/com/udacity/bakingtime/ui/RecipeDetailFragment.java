@@ -55,9 +55,10 @@ public class RecipeDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
 
         if (mRecipe != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mRecipe.getName());
+            ((TextView) rootView.findViewById(R.id.step_description)).setText(mRecipe.getName());
         }
 
         return rootView;
     }
+
 }
