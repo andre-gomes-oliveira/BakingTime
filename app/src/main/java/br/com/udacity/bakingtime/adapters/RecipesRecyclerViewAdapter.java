@@ -2,7 +2,6 @@ package br.com.udacity.bakingtime.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +11,17 @@ import android.widget.TextView;
 import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.model.Recipe;
 import br.com.udacity.bakingtime.ui.RecipeDetailActivity;
+import br.com.udacity.bakingtime.ui.RecipeStepsActivity;
 
 public class RecipesRecyclerViewAdapter
         extends RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
 
-    private final AppCompatActivity mParentActivity;
     private final Recipe[] mRecipes;
+    private boolean mIsTablet;
 
-    public RecipesRecyclerViewAdapter(Recipe[] items, AppCompatActivity parent) {
+    public RecipesRecyclerViewAdapter(boolean isTablet, Recipe[] items) {
+        mIsTablet = isTablet;
         mRecipes = items;
-        mParentActivity = parent;
     }
 
     @Override
@@ -61,11 +61,21 @@ public class RecipesRecyclerViewAdapter
         public void onClick(View view) {
             Recipe recipe = (Recipe) view.getTag();
             Context context = view.getContext();
-            Class destinationClass = RecipeDetailActivity.class;
-            Intent intent = new Intent(context, destinationClass);
 
-            intent.putExtra(context.getString(R.string.recipe_intent), recipe);
-            context.startActivity(intent);
+            if (mIsTablet) {
+                Class destinationClass = RecipeDetailActivity.class;
+                Intent intent = new Intent(context, destinationClass);
+
+                intent.putExtra(context.getString(R.string.recipe_intent), recipe);
+                context.startActivity(intent);
+            } else {
+
+                Class destinationClass = RecipeStepsActivity.class;
+                Intent intent = new Intent(context, destinationClass);
+
+                intent.putExtra(context.getString(R.string.recipe_intent), recipe);
+                context.startActivity(intent);
+            }
         }
     };
 }

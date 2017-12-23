@@ -19,7 +19,7 @@ public class Step implements Parcelable {
         this.mPictureUrl = pictureUrl;
     }
 
-    public Step(Parcel parcel) {
+    private Step(Parcel parcel) {
         this.mId = parcel.readInt();
         this.mShortDesc = parcel.readString();
         this.mLongDesc = parcel.readString();

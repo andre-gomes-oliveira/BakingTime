@@ -36,25 +36,43 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/recipe_details_nsv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/recipe_detail_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/steps_list"
-                android:name="br.com.udacity.bakingtime.RecipeDetailFragment"
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/step_list_nsc"
                 android:layout_width="@dimen/item_width"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <FrameLayout
+                    android:id="@+id/step_list_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                </FrameLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+
+            <!-- A small divider -->
+            <View
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                tools:context="br.com.udacity.bakingtime.ui.RecipeDetailActivity"
-                tools:listitem="@layout/recipe_list_content" />
+                android:background="@android:color/darker_gray" />
+
+                <FrameLayout
+                    android:id="@+id/step_detail_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
 
         </LinearLayout>
 

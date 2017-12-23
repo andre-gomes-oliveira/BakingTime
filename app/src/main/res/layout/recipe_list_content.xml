@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
         android:layout_gravity="center"
-        android:layout_margin="2dp"
-        card_view:cardBackgroundColor="@color/cardview_dark_background"
+        android:layout_margin="4dp"
+        card_view:cardBackgroundColor="@color/colorPlainText"
         card_view:cardCornerRadius="6dp">
 
         <LinearLayout

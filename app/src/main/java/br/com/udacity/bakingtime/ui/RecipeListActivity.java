@@ -162,6 +162,8 @@ public class RecipeListActivity
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Recipe[] recipes) {
-        recyclerView.setAdapter(new RecipesRecyclerViewAdapter(recipes, this));
+        Configuration config = getResources().getConfiguration();
+        recyclerView.setAdapter(new RecipesRecyclerViewAdapter(
+                config.smallestScreenWidthDp >= 600, recipes));
     }
 }

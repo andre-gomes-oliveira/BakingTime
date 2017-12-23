@@ -7,17 +7,17 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.RecipeListActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <tools:validation testUrl="https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json" />
 
             <intent-filter>
@@ -32,10 +32,19 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="d17h27t6h515a5.cloudfront.net"
-                    android:pathPrefix="/topher/2017/May/59121517_baking" />
+                    android:pathPrefix="/topher/2017/May/59121517_baking"
+                    android:scheme="https" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.RecipeStepsActivity"
+            android:parentActivityName=".ui.RecipeListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.udacity.bakingtime.ui.RecipeListActivity" />
         </activity>
         <activity
             android:name=".ui.RecipeDetailActivity"
@@ -46,6 +55,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.udacity.bakingtime.ui.RecipeListActivity" />
         </activity>
+
     </application>
 
 </manifest>

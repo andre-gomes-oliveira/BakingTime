@@ -1,5 +1,6 @@
 package br.com.udacity.bakingtime.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import br.com.udacity.bakingtime.R;
-import br.com.udacity.bakingtime.model.Ingredient;
 import br.com.udacity.bakingtime.model.Recipe;
 import br.com.udacity.bakingtime.model.Step;
 import br.com.udacity.bakingtime.ui.RecipeDetailActivity;
@@ -21,69 +21,66 @@ public class StepsRecyclerViewAdapter
         extends RecyclerView.Adapter<StepsRecyclerViewAdapter.ViewHolder> {
 
     private final AppCompatActivity mParentActivity;
-    private final Ingredient[] mIngredients;
     private final Step[] mSteps;
     private final boolean mTwoPane;
 
-    public StepsRecyclerViewAdapter(boolean twoPane, Recipe item, AppCompatActivity parent) {
+    public StepsRecyclerViewAdapter(boolean twoPane, Recipe item, Activity parent) {
         mTwoPane = twoPane;
-        mIngredients = item.getIngredients();
         mSteps = item.getSteps();
-        mParentActivity = parent;
+        mParentActivity = (AppCompatActivity) parent;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recipe_list_content, parent, false);
+                .inflate(R.layout.step_list_content, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.mShortDescView.setText(String.valueOf(mSteps[position].getShortDesc()));
 
+        holder.itemView.setTag(mSteps[position]);
+        holder.itemView.setOnClickListener(mOnClickListener);
     }
 
     @Override
     public int getItemCount() {
-        // Including one extra item for the Ingredients
-        return (mSteps.length + 1);
+        return (mSteps.length);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView mIdView;
-        final TextView mContentView;
+        final TextView mShortDescView;
 
         ViewHolder(View view) {
             super(view);
-            mIdView = view.findViewById(R.id.id_text);
-            mContentView = view.findViewById(R.id.content);
+            mShortDescView = view.findViewById(R.id.short_desc_tv);
         }
     }
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Recipe recipe = (Recipe) view.getTag();
+            Step step = (Step) view.getTag();
             Context context = view.getContext();
 
             if (mTwoPane) {
 
                 Bundle arguments = new Bundle();
-                arguments.putParcelable(context.getString(R.string.recipe_steps_intent), recipe);
+                arguments.putParcelable(context.getString(R.string.recipe_step_intent), step);
 
                 RecipeDetailFragment fragment = new RecipeDetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.recipe_detail_container, fragment)
+                        .replace(R.id.step_detail_container, fragment)
                         .commit();
             } else {
 
-                //TODO: Verify how to adapt this logic to switch between multiple fragments
                 Class destinationClass = RecipeDetailActivity.class;
                 Intent intent = new Intent(context, destinationClass);
 
-                intent.putExtra(context.getString(R.string.recipe_intent), recipe);
+                intent.putExtra(context.getString(R.string.recipe_step_intent), step);
                 context.startActivity(intent);
             }
         }

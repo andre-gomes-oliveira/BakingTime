@@ -15,7 +15,7 @@ public class Ingredient implements Parcelable {
         this.mName = name;
     }
 
-    public Ingredient(Parcel parcel) {
+    private Ingredient(Parcel parcel) {
         this.mQuantity = parcel.readDouble();
         this.mMeasure = parcel.readString();
         this.mName = parcel.readString();

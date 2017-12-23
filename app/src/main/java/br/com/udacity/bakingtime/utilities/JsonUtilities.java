@@ -4,8 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
-
 import br.com.udacity.bakingtime.model.Ingredient;
 import br.com.udacity.bakingtime.model.Recipe;
 import br.com.udacity.bakingtime.model.Step;
