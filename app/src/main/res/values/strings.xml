@@ -4,14 +4,25 @@
     <string name="title_recipe_detail">Recipe Detail</string>
     <string name="recipe_ingredients">Ingredients</string>
     <string name="error_loading_message">Failed to load the recipes, check your internet connection.</string>
+    <string name="step_navigation_forward_error">There are no further steps to this recipe.</string>
+    <string name="step_navigation_backward_error">There are no previous steps to this recipe.</string>
 
     <!-- Descriptive strings that let the user know the type of data being displayed to them -->
+    <string name="recipe_servings">Servings: </string>
     <string name="ingredient_measure">Measure: </string>
     <string name="ingredient_quantity">Quantity: </string>
 
     <!-- Additional values to be used in code, not shown ot the user -->
-    <string name="recipe_intent" translatable="false">recipe_content_intent</string>
-    <string name="recipe_step_intent" translatable="false">step_content_intent</string>
+    <!-- Intents -->
+    <string name="intent_recipe" translatable="false">recipe_content_intent</string>
+    <string name="intent_recipe_step" translatable="false">step_content_intent</string>
+    <string name="intent_recipe_step_index" translatable="false">step_index_intent</string>
+
+    <!-- State related bundle-->
     <string name="bundle_recycler_position" translatable="false">bundle_recipe_grid_position</string>
     <string name="bundle_request" translatable="false">request_url</string>
+    <string name="player_ready" translatable="false">player_ready</string>
+    <string name="player_window" translatable="false">player_current_window</string>
+    <string name="player_position" translatable="false">player_current_position</string>
+
 </resources>

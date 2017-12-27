@@ -13,8 +13,6 @@ public class JsonUtilities {
     public static Recipe[] getRecipeDataFromJson(String recipesJsonStr)
             throws JSONException {
 
-        final String MESSAGE_CODE = "cod";
-
         final String RECIPE_ID = "id";
         final String RECIPE_NAME = "name";
         final String RECIPE_INGREDIENTS = "ingredients";

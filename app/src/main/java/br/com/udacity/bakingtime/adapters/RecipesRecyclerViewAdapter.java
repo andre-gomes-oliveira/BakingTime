@@ -1,7 +1,10 @@
 package br.com.udacity.bakingtime.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +19,12 @@ import br.com.udacity.bakingtime.ui.RecipeStepsActivity;
 public class RecipesRecyclerViewAdapter
         extends RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
 
+    private final AppCompatActivity mParentActivity;
     private final Recipe[] mRecipes;
-    private boolean mIsTablet;
+    private final boolean mIsTablet;
 
-    public RecipesRecyclerViewAdapter(boolean isTablet, Recipe[] items) {
+    public RecipesRecyclerViewAdapter(boolean isTablet, Recipe[] items,  Activity parent) {
+        mParentActivity = (AppCompatActivity) parent;
         mIsTablet = isTablet;
         mRecipes = items;
     }
@@ -33,8 +38,9 @@ public class RecipesRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mIdView.setText(String.valueOf(mRecipes[position].getId()));
-        holder.mContentView.setText(mRecipes[position].getName());
+        holder.mNameTextView.setText(mRecipes[position].getName());
+        holder.mServingsTextView.setText(mParentActivity.getString(R.string.recipe_servings));
+        holder.mServingsTextView.append(String.valueOf(mRecipes[position].getServings()));
 
         holder.itemView.setTag(mRecipes[position]);
         holder.itemView.setOnClickListener(mOnClickListener);
@@ -46,13 +52,15 @@ public class RecipesRecyclerViewAdapter
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView mIdView;
-        final TextView mContentView;
+        final CardView mCardView;
+        final TextView mNameTextView;
+        final TextView mServingsTextView;
 
         ViewHolder(View view) {
             super(view);
-            mIdView = view.findViewById(R.id.id_text);
-            mContentView = view.findViewById(R.id.content);
+            mCardView = view.findViewById(R.id.recipe_card_view);
+            mNameTextView = view.findViewById(R.id.name_text_view);
+            mServingsTextView = view.findViewById(R.id.servings_text_view);
         }
     }
 
@@ -66,14 +74,14 @@ public class RecipesRecyclerViewAdapter
                 Class destinationClass = RecipeDetailActivity.class;
                 Intent intent = new Intent(context, destinationClass);
 
-                intent.putExtra(context.getString(R.string.recipe_intent), recipe);
+                intent.putExtra(context.getString(R.string.intent_recipe), recipe);
                 context.startActivity(intent);
             } else {
 
                 Class destinationClass = RecipeStepsActivity.class;
                 Intent intent = new Intent(context, destinationClass);
 
-                intent.putExtra(context.getString(R.string.recipe_intent), recipe);
+                intent.putExtra(context.getString(R.string.intent_recipe), recipe);
                 context.startActivity(intent);
             }
         }

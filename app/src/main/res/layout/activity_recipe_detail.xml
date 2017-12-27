@@ -4,18 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="br.com.udacity.bakingtime.ui.RecipeDetailActivity"
-    tools:ignore="MergeRootFrame">
+    tools:context="br.com.udacity.bakingtime.ui.RecipeDetailActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+        android:id="@+id/detail_app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+            android:id="@+id/detail_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -28,16 +27,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/step_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_anchor="@id/detail_toolbar"
+        app:layout_anchorGravity="bottom|center_vertical|end"
         />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_arrow_back_white_24px"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_anchor="@id/step_detail_container"
+        app:layout_anchorGravity="bottom|left|end" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_forward_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_arrow_forward_white_24px"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_anchor="@id/step_detail_container"
+        app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

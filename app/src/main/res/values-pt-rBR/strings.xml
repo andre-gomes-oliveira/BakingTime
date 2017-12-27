@@ -7,4 +7,7 @@
     <string name="recipe_ingredients">Ingredientes</string>
     <string name="ingredient_measure">Medida: </string>
     <string name="ingredient_quantity">Quantidade: </string>
+    <string name="step_navigation_forward_error">Não há passos seguintes para esta receita.</string>
+    <string name="step_navigation_backward_error">Não há passos anteriores para esta receita.</string>
+    <string name="recipe_servings">Porções: </string>
 </resources>

@@ -14,7 +14,7 @@
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/playerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/player_max_height"
             app:controller_layout_id="@layout/custom_playback_control" />
 
         <TextView
@@ -32,6 +32,3 @@
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
-
-
-

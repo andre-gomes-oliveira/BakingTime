@@ -21,13 +21,13 @@ public class StepsRecyclerViewAdapter
         extends RecyclerView.Adapter<StepsRecyclerViewAdapter.ViewHolder> {
 
     private final AppCompatActivity mParentActivity;
-    private final Step[] mSteps;
+    private final Recipe mRecipe;
     private final boolean mTwoPane;
 
     public StepsRecyclerViewAdapter(boolean twoPane, Recipe item, Activity parent) {
-        mTwoPane = twoPane;
-        mSteps = item.getSteps();
         mParentActivity = (AppCompatActivity) parent;
+        mTwoPane = twoPane;
+        mRecipe = item;
     }
 
     @Override
@@ -39,15 +39,16 @@ public class StepsRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mShortDescView.setText(String.valueOf(mSteps[position].getShortDesc()));
+        Step step = mRecipe.getSteps()[position];
 
-        holder.itemView.setTag(mSteps[position]);
+        holder.mShortDescView.setText(String.valueOf(step.getShortDesc()));
+        holder.itemView.setTag(step);
         holder.itemView.setOnClickListener(mOnClickListener);
     }
 
     @Override
     public int getItemCount() {
-        return (mSteps.length);
+        return (mRecipe.getSteps().length);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -68,7 +69,8 @@ public class StepsRecyclerViewAdapter
             if (mTwoPane) {
 
                 Bundle arguments = new Bundle();
-                arguments.putParcelable(context.getString(R.string.recipe_step_intent), step);
+                arguments.putParcelable(context.getString(R.string.intent_recipe), mRecipe);
+                arguments.putParcelable(context.getString(R.string.intent_recipe_step), step);
 
                 RecipeDetailFragment fragment = new RecipeDetailFragment();
                 fragment.setArguments(arguments);
@@ -80,7 +82,8 @@ public class StepsRecyclerViewAdapter
                 Class destinationClass = RecipeDetailActivity.class;
                 Intent intent = new Intent(context, destinationClass);
 
-                intent.putExtra(context.getString(R.string.recipe_step_intent), step);
+                intent.putExtra(context.getString(R.string.intent_recipe), mRecipe);
+                intent.putExtra(context.getString(R.string.intent_recipe_step), step);
                 context.startActivity(intent);
             }
         }

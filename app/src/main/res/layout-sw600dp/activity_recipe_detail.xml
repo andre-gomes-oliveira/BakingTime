@@ -35,32 +35,23 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/recipe_details_nsv"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/recipe_details_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/two_pane_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <android.support.v4.widget.NestedScrollView
-                android:id="@+id/step_list_nsc"
+                android:id="@+id/step_list_container"
                 android:layout_width="@dimen/item_width"
                 android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                <FrameLayout
-                    android:id="@+id/step_list_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                </FrameLayout>
-
-            </android.support.v4.widget.NestedScrollView>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <!-- A small divider -->
             <View
@@ -68,14 +59,27 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/darker_gray" />
 
-                <FrameLayout
-                    android:id="@+id/step_detail_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal" />
+            <android.support.design.widget.CoordinatorLayout
+                android:id="@+id/step_detail_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+        <!-- These action buttons are not used on tablet devices -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_forward_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.design.widget.CoordinatorLayout>

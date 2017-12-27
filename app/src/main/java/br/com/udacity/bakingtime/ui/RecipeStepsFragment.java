@@ -2,6 +2,7 @@ package br.com.udacity.bakingtime.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -55,10 +56,10 @@ public class RecipeStepsFragment extends Fragment {
         Bundle arguments = getArguments();
 
         if(savedInstanceState != null){
-            mRecipe = savedInstanceState.getParcelable(getString(R.string.recipe_intent));
+            mRecipe = savedInstanceState.getParcelable(getString(R.string.intent_recipe));
         }
-        else if(getArguments().containsKey(getString(R.string.recipe_intent))){
-            mRecipe = arguments.getParcelable(getString(R.string.recipe_intent));
+        else if(getArguments().containsKey(getString(R.string.intent_recipe))){
+            mRecipe = arguments.getParcelable(getString(R.string.intent_recipe));
         }
 
         if(mRecipe != null){
@@ -112,10 +113,12 @@ public class RecipeStepsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(getString(R.string.recipe_intent), mRecipe);
+        outState.putParcelable(getString(R.string.intent_recipe), mRecipe);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, Recipe recipe) {
-        recyclerView.setAdapter(new StepsRecyclerViewAdapter(false, recipe, this.getActivity()));
+        Configuration config = getResources().getConfiguration();
+        recyclerView.setAdapter(new StepsRecyclerViewAdapter(
+                config.smallestScreenWidthDp >= 600, recipe, this.getActivity()));
     }
 }
