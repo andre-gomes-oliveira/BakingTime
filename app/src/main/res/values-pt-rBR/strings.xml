@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hora da Receita!</string>
+    <string name="app_name">Hora de cozinhar!</string>
     <string name="title_recipe_detail">Passos da Receita</string>
     <string name="error_loading_message">Não foi possível carregar as receitas,
         por favor verifique a sua conexão com a internet</string>
@@ -10,4 +10,6 @@
     <string name="step_navigation_forward_error">Não há passos seguintes para esta receita.</string>
     <string name="step_navigation_backward_error">Não há passos anteriores para esta receita.</string>
     <string name="recipe_servings">Porções: </string>
+    <string name="appwidget_text">Escolha uma receita para ver os ingredientes.</string>
+    <string name="add_widget">App widget</string>
 </resources>

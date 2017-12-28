@@ -1,6 +1,7 @@
 package br.com.udacity.bakingtime.ui;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.adapters.StepsRecyclerViewAdapter;
 import br.com.udacity.bakingtime.model.Ingredient;
 import br.com.udacity.bakingtime.model.Recipe;
+import br.com.udacity.bakingtime.utilities.RecipesService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,6 +52,7 @@ public class RecipeStepsFragment extends Fragment {
      */
     public RecipeStepsFragment() {
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +99,7 @@ public class RecipeStepsFragment extends Fragment {
             }
 
             setupRecyclerView(mStepsRecyclerView, mRecipe);
+            RecipesService.startActionUpdateRecipeWidgets(context, mRecipe);
 
             /*
       Layout manager used by the steps recycler view.

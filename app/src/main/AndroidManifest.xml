@@ -39,8 +39,8 @@
         </activity>
         <activity
             android:name=".ui.RecipeStepsActivity"
-            android:parentActivityName=".ui.RecipeListActivity"
             android:launchMode="singleTop"
+            android:parentActivityName=".ui.RecipeListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -56,6 +56,20 @@
                 android:value="br.com.udacity.bakingtime.ui.RecipeListActivity" />
         </activity>
 
+        <receiver android:name=".ui.RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_info" />
+        </receiver>
+
+        <service android:name=".utilities.RecipesService" />
+        <service
+            android:name=".utilities.IngredientsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
