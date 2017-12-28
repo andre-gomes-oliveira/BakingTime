@@ -1,14 +1,12 @@
 package br.com.udacity.bakingtime.ui;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.adapters.StepsRecyclerViewAdapter;
 import br.com.udacity.bakingtime.model.Ingredient;
 import br.com.udacity.bakingtime.model.Recipe;
-import br.com.udacity.bakingtime.utilities.RecipesService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,12 +36,14 @@ public class RecipeStepsFragment extends Fragment {
     /**
      * TYextView that will display the list of ingredients for the recipe.
      */
-    @BindView(R.id.ingredients_tv) TextView mIngredientsTextView;
+    @BindView(R.id.ingredients_tv)
+    TextView mIngredientsTextView;
 
     /**
      * RecyclerView used to display the steps of the recipe
      */
-    @BindView(R.id.step_list) RecyclerView mStepsRecyclerView;
+    @BindView(R.id.step_list)
+    RecyclerView mStepsRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,14 +57,13 @@ public class RecipeStepsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(getString(R.string.intent_recipe));
-        }
-        else if(getArguments().containsKey(getString(R.string.intent_recipe))){
+        } else if (getArguments().containsKey(getString(R.string.intent_recipe))) {
             mRecipe = arguments.getParcelable(getString(R.string.intent_recipe));
         }
 
-        if(mRecipe != null){
+        if (mRecipe != null) {
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
@@ -86,20 +84,18 @@ public class RecipeStepsFragment extends Fragment {
         if (mRecipe != null) {
             Ingredient[] ingredients = mRecipe.getIngredients();
 
-            for( Ingredient ingredient : ingredients) {
+            for (Ingredient ingredient : ingredients) {
                 String name = ingredient.getName() + "\n";
 
                 String measure = context.getString(R.string.ingredient_measure)
-                        +  ingredient.getMeasure() + "\n";
+                        + ingredient.getMeasure() + "\n";
 
                 String quantity = context.getString(R.string.ingredient_quantity)
-                        +  ingredient.getQuantity() + "\n";
+                        + ingredient.getQuantity() + "\n";
 
                 mIngredientsTextView.append(name + measure + quantity + "\n");
             }
-
             setupRecyclerView(mStepsRecyclerView, mRecipe);
-            RecipesService.startActionUpdateRecipeWidgets(context, mRecipe);
 
             /*
       Layout manager used by the steps recycler view.

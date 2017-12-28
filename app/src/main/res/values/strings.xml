@@ -3,11 +3,10 @@
     <string name="app_name">Baking Time!</string>
     <string name="title_recipe_detail">Recipe Detail</string>
     <string name="recipe_ingredients">Ingredients</string>
-    <string name="error_loading_message">Failed to load the recipes, check your internet connection.</string>
-    <string name="step_navigation_forward_error">There are no further steps to this recipe.</string>
-    <string name="step_navigation_backward_error">There are no previous steps to this recipe.</string>
-    <string name="appwidget_text">Choose a recipe to display the ingredients.</string>
-    <string name="add_widget">Add widget</string>
+    <string name="error_loading_message">Failed to load the recipes, check your internet connection</string>
+    <string name="step_navigation_forward_error">There are no further steps to this recipe</string>
+    <string name="step_navigation_backward_error">There are no previous steps to this recipe</string>
+    <string name="appwidget_text">Choose a recipe to display the ingredients</string>
 
     <!-- Descriptive strings that let the user know the type of data being displayed to them -->
     <string name="recipe_servings">Servings: </string>

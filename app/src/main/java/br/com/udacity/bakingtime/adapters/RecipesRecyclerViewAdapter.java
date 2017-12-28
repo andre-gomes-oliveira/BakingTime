@@ -15,6 +15,7 @@ import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.model.Recipe;
 import br.com.udacity.bakingtime.ui.RecipeDetailActivity;
 import br.com.udacity.bakingtime.ui.RecipeStepsActivity;
+import br.com.udacity.bakingtime.utilities.RecipesService;
 
 public class RecipesRecyclerViewAdapter
         extends RecyclerView.Adapter<RecipesRecyclerViewAdapter.ViewHolder> {
@@ -69,6 +70,9 @@ public class RecipesRecyclerViewAdapter
         public void onClick(View view) {
             Recipe recipe = (Recipe) view.getTag();
             Context context = view.getContext();
+
+            //Updates the widget when a recipe is selected
+            RecipesService.startActionUpdateRecipeWidgets(context, recipe);
 
             if (mIsTablet) {
                 Class destinationClass = RecipeDetailActivity.class;
