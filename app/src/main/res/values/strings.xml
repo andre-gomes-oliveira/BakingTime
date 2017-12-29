@@ -13,7 +13,6 @@
     <string name="ingredient_measure">Measure: </string>
     <string name="ingredient_quantity">Quantity: </string>
 
-
     <!-- Additional values to be used in code, not shown ot the user -->
     <!-- Intents -->
     <string name="intent_recipe" translatable="false">recipe_content_intent</string>
@@ -28,5 +27,7 @@
     <string name="player_ready" translatable="false">player_ready</string>
     <string name="player_window" translatable="false">player_current_window</string>
     <string name="player_position" translatable="false">player_current_position</string>
+    <string name="player_video_uri" translatable="false">player_video_uri</string>
+    <string name="player_thumbnail_uri" translatable="false">player_image_uri</string>
 
 </resources>

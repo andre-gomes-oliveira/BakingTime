@@ -1,11 +1,14 @@
 package br.com.udacity.bakingtime.ui;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +34,10 @@ import com.google.android.exoplayer2.util.Util;
 
 import br.com.udacity.bakingtime.R;
 import br.com.udacity.bakingtime.model.Step;
+import br.com.udacity.bakingtime.utilities.fetchThumbnailAsyncTaskLoader;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -40,7 +45,8 @@ import butterknife.ButterKnife;
  * either in two-pane mode (on tablets, side by side with a list of steps)
  * or a on handsets (by itself).
  */
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Bitmap> {
 
     /**
      * The Recipe this fragment is presenting.
@@ -58,9 +64,14 @@ public class RecipeDetailFragment extends Fragment {
 
     private SimpleExoPlayer mExoPlayer;
 
-    boolean mPlayWhenReady = true;
-    int mCurrentWindow;
-    long mPlaybackPosition;
+    private boolean mPlayWhenReady = true;
+    private int mCurrentWindow;
+    private long mPlaybackPosition;
+    private String mThumbnailUrl;
+    private Uri mVideoUri;
+
+    /* Unique identifiers for the loader used by this activity*/
+    private static final int RECIPE_STEP_THUMBNAIL_LOADER = 11;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -79,6 +90,8 @@ public class RecipeDetailFragment extends Fragment {
             mPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.player_ready));
             mCurrentWindow = savedInstanceState.getInt(getString(R.string.player_window));
             mPlaybackPosition = savedInstanceState.getLong(getString(R.string.player_position));
+            mThumbnailUrl = savedInstanceState.getString(getString(R.string.player_thumbnail_uri));
+            mVideoUri = savedInstanceState.getParcelable(getString(R.string.player_video_uri));
         } else if (getArguments().containsKey(getString(R.string.intent_recipe_step))) {
             mStep = arguments.getParcelable(getString(R.string.intent_recipe_step));
         }
@@ -110,11 +123,30 @@ public class RecipeDetailFragment extends Fragment {
 
 
             if (videoUrl != null && !videoUrl.isEmpty()) {
-                initializePlayer(Uri.parse(videoUrl));
+                mVideoUri = Uri.parse(videoUrl);
+                initializePlayer();
                 mPlayerView.setVisibility(View.VISIBLE);
             } else if (pictureUrl != null && !pictureUrl.isEmpty()) {
-                initializePlayer(Uri.parse(pictureUrl));
-                mPlayerView.setVisibility(View.VISIBLE);
+                mThumbnailUrl = pictureUrl;
+
+                try {
+                    LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+
+                    Bundle requestBundle = new Bundle();
+                    requestBundle.putString(getString(R.string.player_thumbnail_uri), mThumbnailUrl);
+
+                    Loader<String> thumbnailLoader = loaderManager.getLoader(RECIPE_STEP_THUMBNAIL_LOADER);
+
+                    if (thumbnailLoader == null) {
+                        loaderManager.initLoader(RECIPE_STEP_THUMBNAIL_LOADER, requestBundle, this);
+                    } else {
+                        loaderManager.restartLoader(RECIPE_STEP_THUMBNAIL_LOADER, requestBundle, this);
+                    }
+                } catch (java.lang.NullPointerException e) {
+                    Timber.e(e.getMessage());
+                    e.printStackTrace();
+                }
+
             } else
                 mPlayerView.setVisibility(View.GONE);
         }
@@ -123,9 +155,68 @@ public class RecipeDetailFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23 && mExoPlayer == null) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Util.SDK_INT <= 23 || mExoPlayer == null) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23 && mExoPlayer != null) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23 && mExoPlayer != null) {
+            releasePlayer();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        releasePlayer();
+        if (mExoPlayer != null) {
+            releasePlayer();
+        }
+    }
+
+    /**
+     * Bitmap loading functions
+     */
+
+    @Override
+    public Loader<Bitmap> onCreateLoader(int id, Bundle args) {
+        return new fetchThumbnailAsyncTaskLoader(getContext(), args);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Bitmap> loader, Bitmap data) {
+        if (data != null) {
+            mPlayerView.setDefaultArtwork(data);
+            mPlayerView.setVisibility(View.VISIBLE);
+        } else {
+            mPlayerView.setVisibility(View.GONE);
+        }
+    }
+
+    /* This function had to be overridden, but it will not be used by this fragment */
+    @Override
+    public void onLoaderReset(Loader<Bitmap> loader) {
+
     }
 
     /**
@@ -135,12 +226,14 @@ public class RecipeDetailFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(getString(R.string.intent_recipe_step), mStep);
-        outState.putBoolean(getString(R.string.player_ready), mPlayWhenReady);
-        outState.putInt(getString(R.string.player_window), mCurrentWindow);
-        outState.putLong(getString(R.string.player_position), mPlaybackPosition);
+        outState.putBoolean(getString(R.string.player_ready), mExoPlayer.getPlayWhenReady());
+        outState.putInt(getString(R.string.player_window), mExoPlayer.getCurrentWindowIndex());
+        outState.putLong(getString(R.string.player_position), mExoPlayer.getCurrentPosition());
+        outState.putString(getString(R.string.player_thumbnail_uri), mThumbnailUrl);
+        outState.putParcelable(getString(R.string.player_video_uri), mVideoUri);
     }
 
-    private void initializePlayer(Uri mediaUri) {
+    private void initializePlayer() {
 
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getContext()),
@@ -151,7 +244,7 @@ public class RecipeDetailFragment extends Fragment {
         mExoPlayer.setPlayWhenReady(mPlayWhenReady);
         mExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
 
-        MediaSource mediaSource = buildMediaSource(mediaUri);
+        MediaSource mediaSource = buildMediaSource(mVideoUri);
         mExoPlayer.prepare(mediaSource, true, false);
 
         ComponentListener listener = new ComponentListener();
@@ -166,13 +259,15 @@ public class RecipeDetailFragment extends Fragment {
 
     private void releasePlayer() {
         if (mExoPlayer != null) {
-            mPlaybackPosition = mExoPlayer.getCurrentPosition();
             mCurrentWindow = mExoPlayer.getCurrentWindowIndex();
+            mPlaybackPosition = mExoPlayer.getCurrentPosition();
             mPlayWhenReady = mExoPlayer.getPlayWhenReady();
+
             mExoPlayer.release();
             mExoPlayer = null;
         }
     }
+
 
     /**
      * Inner class used to capture the ExoPlayer events
