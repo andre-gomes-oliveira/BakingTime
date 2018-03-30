@@ -36,7 +36,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
         //The pending intent that launches the app if no recipe is being displayed
         Intent activityIntent = new Intent(context, RecipeListActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0 ,
                 activityIntent, 0);
         views.setOnClickPendingIntent(R.id.empty_view, pendingIntent);
 

@@ -68,5 +68,5 @@
         app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@id/step_detail_container"
         app:layout_anchorGravity="bottom|right|end" />
-
 </android.support.design.widget.CoordinatorLayout>
+
