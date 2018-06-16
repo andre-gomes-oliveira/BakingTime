@@ -1,4 +1,4 @@
-# Android Nanodegree - BakingTime Projext
+# Android Nanodegree - BakingTime Project
 
 An app made to help find recipes and break them down in easy to follow steps.
 
